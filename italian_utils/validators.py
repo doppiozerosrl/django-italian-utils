@@ -20,7 +20,10 @@ def validate_codice_fiscale(value):
     codice_fiscale_da_controllare = list(value)
     for i, x in enumerate(value[:-1].upper()):
         if i in [6,7,9,10,12,13,14,15] and not x.isdigit():
-            codice_fiscale_da_controllare[i] = conversione_omocodia[x]
+            try:
+                codice_fiscale_da_controllare[i] = conversione_omocodia[x]
+            except KeyError:
+                raise ValidationError('Inserisci un codice fiscale formalmente valido')
 
     codice_fiscale_re = re.compile(
         r'^[a-zA-Z]{6}\d{2}[a-zA-Z]\d{2}[a-zA-Z]\d{3}[a-zA-Z]'
